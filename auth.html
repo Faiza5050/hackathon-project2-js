@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillShare - Login/Signup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    .auth-container {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+    .auth-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    }
+    .form-input {
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+    .toggle-form {
+      color: #3b82f6;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .toggle-form:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="auth-container flex items-center justify-center p-4">
+  <div class="auth-card w-full max-w-md p-8">
+    <!-- Logo/Brand -->
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-blue-600 mb-2">SkillShare</h1>
+      <p class="text-gray-600">Share knowledge, grow together</p>
+    </div>
+
+    <!-- Login Form (default visible) -->
+    <form id="loginForm" class="space-y-5">
+      <h2 class="text-2xl font-semibold text-center text-gray-800">Welcome Back</h2>
+      
+      <div class="space-y-4">
+        <!-- Email -->
+        <div>
+          <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-envelope text-gray-400"></i>
+            </div>
+            <input 
+              type="email" 
+              id="loginEmail" 
+              required
+              placeholder="your@email.com"
+              class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+            >
+          </div>
+        </div>
+        
+        <!-- Password -->
+        <div>
+          <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-lock text-gray-400"></i>
+            </div>
+            <input 
+              type="password" 
+              id="loginPassword" 
+              required
+              placeholder="••••••••"
+              minlength="6"
+              class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+            >
+          </div>
+        </div>
+        
+        <!-- Remember & Forgot -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input id="rememberMe" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+            <label for="rememberMe" class="ml-2 block text-sm text-gray-700">Remember me</label>
+          </div>
+          <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+        </div>
+        
+        <!-- Submit Button -->
+        <button type="submit" class="w-full bg-blue-600 text-white py-2.5 px-4 rounded-lg font-medium hover:bg-blue-700 transition duration-300 flex items-center justify-center">
+          <i class="fas fa-sign-in-alt mr-2"></i> Login
+        </button>
+        
+        <!-- Error Message -->
+        <div id="loginError" class="text-red-500 text-sm text-center py-2 hidden"></div>
+        
+        <!-- Divider -->
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500">Or continue with</span>
+          </div>
+        </div>
+        
+        <!-- Social Login (optional) -->
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+            <i class="fab fa-google text-red-500 mr-2"></i> Google
+          </button>
+          <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+            <i class="fab fa-github text-gray-800 mr-2"></i> GitHub
+          </button>
+        </div>
+      </div>
+      
+      <p class="text-center text-sm text-gray-600">
+        Don't have an account? 
+        <span id="switchToSignup" class="toggle-form font-medium">Sign up</span>
+      </p>
+    </form>
+    
+    <!-- Signup Form (hidden by default) -->
+    <form id="signupForm" class="space-y-5 hidden">
+      <h2 class="text-2xl font-semibold text-center text-gray-800">Create Account</h2>
+      
+      <div class="space-y-4">
+        <!-- Email -->
+        <div>
+          <label for="signupEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-envelope text-gray-400"></i>
+            </div>
+            <input 
+              type="email" 
+              id="signupEmail" 
+              required
+              placeholder="your@email.com"
+              class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+            >
+          </div>
+        </div>
+        
+        <!-- Password -->
+        <div>
+          <label for="signupPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-lock text-gray-400"></i>
+            </div>
+            <input 
+              type="password" 
+              id="signupPassword" 
+              required
+              placeholder="••••••••"
+              minlength="6"
+              class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+            >
+          </div>
+          <p class="mt-1 text-xs text-gray-500">Minimum 6 characters</p>
+        </div>
+        
+        <!-- Confirm Password -->
+        <div>
+          <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-lock text-gray-400"></i>
+            </div>
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              required
+              placeholder="••••••••"
+              minlength="6"
+              class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
+            >
+          </div>
+        </div>
+        
+        <!-- Terms Checkbox -->
+        <div class="flex items-center">
+          <input id="acceptTerms" type="checkbox" required class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+          <label for="acceptTerms" class="ml-2 block text-sm text-gray-700">
+            I agree to the <a href="#" class="text-blue-600 hover:underline">Terms</a> and <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>
+          </label>
+        </div>
+        
+        <!-- Submit Button -->
+        <button type="submit" class="w-full bg-blue-600 text-white py-2.5 px-4 rounded-lg font-medium hover:bg-blue-700 transition duration-300 flex items-center justify-center">
+          <i class="fas fa-user-plus mr-2"></i> Sign Up
+        </button>
+        
+        <!-- Error Message -->
+        <div id="signupError" class="text-red-500 text-sm text-center py-2 hidden"></div>
+        
+        <!-- Success Message -->
+        <div id="signupSuccess" class="text-green-500 text-sm text-center py-2 hidden"></div>
+      </div>
+      
+      <p class="text-center text-sm text-gray-600">
+        Already have an account? 
+        <span id="switchToLogin" class="toggle-form font-medium">Log in</span>
+      </p>
+    </form>
+  </div>
+
+  <!-- Firebase and Auth Scripts -->
+  <script type="module">
+    import { 
+      auth, 
+      db 
+    } from './js/firebase.js';
+    import { 
+      signInWithEmailAndPassword, 
+      createUserWithEmailAndPassword, 
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+    import { 
+      doc, 
+      setDoc 
+    } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+
+    // DOM elements
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const loginError = document.getElementById('loginError');
+    const signupError = document.getElementById('signupError');
+    const signupSuccess = document.getElementById('signupSuccess');
+    const switchToLogin = document.getElementById('switchToLogin');
+    const switchToSignup = document.getElementById('switchToSignup');
+
+    // Switch between forms
+    switchToLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginForm.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+      clearMessages();
+    });
+
+    switchToSignup.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginForm.classList.add('hidden');
+      signupForm.classList.remove('hidden');
+      clearMessages();
+    });
+
+    // Clear error/success messages
+    function clearMessages() {
+      loginError.classList.add('hidden');
+      signupError.classList.add('hidden');
+      signupSuccess.classList.add('hidden');
+    }
+
+    // Login handler
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = loginForm['loginEmail'].value;
+      const password = loginForm['loginPassword'].value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        
+        // Persist auth state if "Remember me" is checked
+        if (rememberMe) {
+          await auth.setPersistence(auth.Auth.Persistence.LOCAL);
+        } else {
+          await auth.setPersistence(auth.Auth.Persistence.SESSION);
+        }
+        
+        // Redirect to home page
+        window.location.href = 'index.html';
+      } catch (error) {
+        loginError.textContent = getErrorMessage(error.code);
+        loginError.classList.remove('hidden');
+      }
+    });
+
+    // Signup handler
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = signupForm['signupEmail'].value;
+      const password = signupForm['signupPassword'].value;
+      const confirmPassword = signupForm['confirmPassword'].value;
+
+      // Validate passwords match
+      if (password !== confirmPassword) {
+        signupError.textContent = "Passwords don't match";
+        signupError.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        // Create user
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Create user document in Firestore
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          createdAt: new Date(),
+          lastLogin: new Date()
+        });
+
+        // Show success message
+        signupSuccess.textContent = "Account created successfully! Redirecting...";
+        signupSuccess.classList.remove('hidden');
+        signupError.classList.add('hidden');
+
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 2000);
+      } catch (error) {
+        signupError.textContent = getErrorMessage(error.code);
+        signupError.classList.remove('hidden');
+        signupSuccess.classList.add('hidden');
+      }
+    });
+
+    // Check auth state
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is already logged in, redirect to home
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Helper function to convert Firebase error codes to user-friendly messages
+    function getErrorMessage(errorCode) {
+      switch (errorCode) {
+        case 'auth/invalid-email':
+          return 'Please enter a valid email address';
+        case 'auth/user-disabled':
+          return 'This account has been disabled';
+        case 'auth/user-not-found':
+          return 'No account found with this email';
+        case 'auth/wrong-password':
+          return 'Incorrect password';
+        case 'auth/email-already-in-use':
+          return 'This email is already registered';
+        case 'auth/weak-password':
+          return 'Password should be at least 6 characters';
+        case 'auth/operation-not-allowed':
+          return 'Email/password accounts are not enabled';
+        default:
+          return 'An error occurred. Please try again';
+      }
+    }
+  </script>
+</body>
+</html>
